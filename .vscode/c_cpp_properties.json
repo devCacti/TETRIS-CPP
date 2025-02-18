@@ -14,7 +14,10 @@
             "compilerPath": "C:/TDM-GCC-64/bin/g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64"
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerArgs": [
+                "-fexec-charset=UTF-8"
+            ]
         }
     ],
     "version": 4
