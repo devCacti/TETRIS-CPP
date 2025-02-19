@@ -31,17 +31,13 @@ public:
     {
         // Destructor
         // Set color back to normal
-        setCColor(7, 0);
+        setConsoleColor(7, 0);
     }
 
     void run()
     {
-        std::cout << "Hello, World!" << std::endl;
+        renderTetris();
 
-        // Draw some cubes to test the best cube character
-        // Set color to white
-        setCColor(0, 15);
-        std::cout << "  " << std::endl;
         // Read ANY key from the user to close the console
         _getch();
     }
@@ -57,10 +53,65 @@ private:
         // Render the game, it is a console game so it is printed to the console
     }
 
+    // Render a text saying "Tetris" using blocks (white spaces)
+    void renderTetris()
+    {
+        char l1[] = "XXXXX XXX XXXXX XXX   XXXXX   XXXX";
+        char l2[] = "  X   X     X   X  X    X    X";
+        char l3[] = "  X   XX    X   XXX     X     XXX";
+        char l4[] = "  X   X     X   X  X    X        X";
+        char l5[] = "  X   XXX   X   X  X  XXXXX  XXXX";
+
+        char *lines[] = {l1, l2, l3, l4, l5};
+
+        for (int j = 0; j < 5; j++)
+        {
+            for (int i = 0; i < strlen(lines[j]); i++)
+            {
+                if (lines[j][i] == 'X')
+                {
+                    setConsoleColor(0, 15);
+                    cout << "  ";
+                }
+                else
+                {
+                    setConsoleColor(0, 0);
+                    cout << "  ";
+                }
+                Sleep(10);
+            }
+            cout << endl;
+        }
+
+        resetColor();
+
+        // X X X X X  X X X  X X X X X  X X X    X X X X X    X X X X
+        //    X       X          X      X     X      X      X
+        //    X       X X        X      X X X        X        X X X
+        //    X	      X          X      X     X      X              X
+        //    X	      X X X      X      X     X  X X X X X  X X X X
+        //
+        // X represents a white space and nothing means a black space
+    }
+
+    void resetColor()
+    {
+        setConsoleColor(7, 0);
+    }
+
     // Set Console Color
-    void setCColor(int textColor, int bgColor)
+    void setConsoleColor(int textColor, int bgColor)
     {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (textColor + (bgColor * 16)));
+    }
+
+    // Set Cursor Position
+    void setCursorPosition(int x, int y)
+    {
+        COORD coord;
+        coord.X = x;
+        coord.Y = y;
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
     }
 };
 
