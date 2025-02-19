@@ -55,26 +55,20 @@ public:
     {
         std::cout << std::endl
                   << "Testing colors" << std::endl;
+        Sleep(1000);
         for (int i = 0; i < 16; i++)
         {
-            setConsoleColor(15, i);
+            setConsoleColor(i, i == 0 ? 15 : 0);
             std::cout << "Color";
-            setConsoleColor(15, 0);
+            Sleep(50);
+
+            setConsoleColor(0, 15);
             std::cout << " " << i << std::endl;
+            Sleep(100);
         }
-    }
 
-    void setConsoleColor(int textColor, int bgColor)
-    {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (textColor + (bgColor * 16)));
-    }
-
-    void setCursorPosition(int x, int y)
-    {
-        COORD coord;
-        coord.X = x;
-        coord.Y = y;
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+        Sleep(1000);
+        resetColor();
     }
 
 private:
@@ -91,16 +85,16 @@ private:
     // Render a text saying "Tetris" using blocks (white spaces)
     void renderTetris()
     {
-        char l1[] = "XXXXX XXX XXXXX XXX   XXXXX   XXXX";
-        char l2[] = "  X   X     X   X  X    X    X";
-        char l3[] = "  X   XX    X   XXX     X     XXXX";
-        char l4[] = "  X   X     X   X  X    X         X";
-        char l5[] = "  X   XXX   X   X  X  XXXXX   XXXX";
+        char l1[] = "XXXXX XXXX XXXXX XXXX  XXXXX   XXXX";
+        char l2[] = "  X   X      X   X   X   X    X";
+        char l3[] = "  X   XXX    X   XXXX    X     XXXX";
+        char l4[] = "  X   X      X   X   X   X         X";
+        char l5[] = "  X   XXXX   X   X   X XXXXX   XXXX";
 
         char *lines[] = {l1, l2, l3, l4, l5};
 
         // Clear the console
-        system("cls");
+        flushConsole();
 
         for (int j = 0; j < 5; j++)
         {
@@ -109,7 +103,7 @@ private:
                 if (lines[j][i] == 'X')
                 {
                     // If there is an X print a white space
-                    setConsoleColor(0, 15);
+                    setConsoleColor(15, 0);
                     cout << " ";
                     Sleep(25);
                 }
@@ -130,7 +124,7 @@ private:
 
     void resetColor()
     {
-        setConsoleColor(7, 0);
+        setConsoleColor(0, 7);
     }
 };
 

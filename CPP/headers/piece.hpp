@@ -58,7 +58,9 @@ public:
 
     void draw()
     {
-        system("cls");
+        Sleep(500);
+        flushConsole();
+        Sleep(500);
         // Print all the positions of the piece
         for (int i = 0; i < 4; i++)
         {
@@ -66,12 +68,14 @@ public:
         }
         // Draw the piece
         setConsoleColor(getBgColor(), 0);
+        // setConsoleColor(0, getBgColor());
+
         for (int i = 0; i < 4; i++)
         {
             setCursorPosition(positions[i].X * 2, positions[i].Y);
             std::cout << "  ";
         }
-        setConsoleColor(0, 7);
+        setConsoleColor(7, 0);
     }
 
     void setPos(int x, int y)
