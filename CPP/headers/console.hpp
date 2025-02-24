@@ -4,7 +4,7 @@
 #include <iostream>
 #include <windows.h>
 
-void setCursorPosition(int x, int y)
+void SetCursorPosition(int x, int y)
 {
     COORD coord;
     coord.X = x;
@@ -12,17 +12,17 @@ void setCursorPosition(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void setConsoleColor(int bg, int fg)
+void SetConsoleColor(int bg, int fg)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), bg * 16 + fg);
 }
 
-void flushConsole()
+void FlushConsole()
 {
     // Clean the screen
-    setConsoleColor(0, 0);
+    SetConsoleColor(0, 0);
     system("cls");
-    setConsoleColor(0, 7);
+    SetConsoleColor(0, 7);
 }
 
 #endif // CONSOLE_HPP

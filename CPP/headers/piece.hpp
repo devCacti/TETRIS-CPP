@@ -50,230 +50,38 @@ public:
         rotation = 0;
     }
 
-    void newPiece()
+    // Change the piece to a new random piece
+    void NewPiece()
     {
         *this = Piece((rand() % 7) - 1);
-        // return *this;
     }
 
-    void draw()
+    void Draw()
     {
-        Sleep(500);
-        flushConsole();
-        Sleep(500);
-        // Print all the positions of the piece
-        for (int i = 0; i < 4; i++)
-        {
-            std::cout << positions[i].X << " " << positions[i].Y << std::endl;
-        }
         // Draw the piece
-        setConsoleColor(getBgColor(), 0);
-        // setConsoleColor(0, getBgColor());
+        SetConsoleColor(GetBgColor(), 0);
+        // SetConsoleColor(0, GetBgColor());
 
         for (int i = 0; i < 4; i++)
         {
-            setCursorPosition(positions[i].X * 2, positions[i].Y);
+            SetCursorPosition(positions[i].X * 2, positions[i].Y);
             std::cout << "  ";
         }
-        setConsoleColor(7, 0);
+        SetConsoleColor(7, 0);
     }
 
-    void setPos(int x, int y)
+    void Move(int x, int y)
     {
-        // Print x and y
-        std::cout << "Setting position" << std::endl;
-        std::cout << x << " " << y << std::endl
-                  << std::endl;
-        // Set the position of all the pieces based on the rotation point and current rotation
-        switch (type)
-        {
-        case 0:
-            // Line piece
-            if ((rotation + 1) % 2)
-            {
-                this->positions[0] = Vector(x, y - 1);
-                this->positions[1] = Vector(x, y);
-                this->positions[2] = Vector(x, y + 1);
-                this->positions[3] = Vector(x, y + 2);
-            }
-            else
-            {
-                this->positions[0] = Vector(x - 1, y);
-                this->positions[1] = Vector(x, y);
-                this->positions[2] = Vector(x + 1, y);
-                this->positions[3] = Vector(x + 2, y);
-            }
-            break;
-        case 1:
-            // L piece
-            this->positions[0] = Vector(x, y - 1);
-            this->positions[1] = Vector(x, y);
-            this->positions[2] = Vector(x, y + 1);
-            this->positions[3] = Vector(x + 1, y + 1);
-
-            if (rotation == 1)
-            {
-                this->positions[0] = Vector(x - 1, y);
-                this->positions[1] = Vector(x, y);
-                this->positions[2] = Vector(x + 1, y);
-                this->positions[3] = Vector(x + 1, y - 1);
-            }
-            else if (rotation == 2)
-            {
-                this->positions[0] = Vector(x, y + 1);
-                this->positions[1] = Vector(x, y);
-                this->positions[2] = Vector(x, y - 1);
-                this->positions[3] = Vector(x - 1, y - 1);
-            }
-            else if (rotation == 3)
-            {
-                this->positions[0] = Vector(x + 1, y);
-                this->positions[1] = Vector(x, y);
-                this->positions[2] = Vector(x - 1, y);
-                this->positions[3] = Vector(x - 1, y + 1);
-            }
-            break;
-        case 2:
-            // J piece
-            this->positions[0] = Vector(x + 1, y - 1);
-            this->positions[1] = Vector(x + 1, y);
-            this->positions[2] = Vector(x + 1, y + 1);
-            this->positions[3] = Vector(x, y + 1);
-
-            if (rotation == 1)
-            {
-                this->positions[0] = Vector(x - 1, y - 1);
-                this->positions[1] = Vector(x, y - 1);
-                this->positions[2] = Vector(x + 1, y - 1);
-                this->positions[3] = Vector(x + 1, y);
-            }
-            else if (rotation == 2)
-            {
-                this->positions[0] = Vector(x - 1, y + 1);
-                this->positions[1] = Vector(x - 1, y);
-                this->positions[2] = Vector(x - 1, y - 1);
-                this->positions[3] = Vector(x, y - 1);
-            }
-            else if (rotation == 3)
-            {
-                this->positions[0] = Vector(x + 1, y + 1);
-                this->positions[1] = Vector(x, y + 1);
-                this->positions[2] = Vector(x - 1, y + 1);
-                this->positions[3] = Vector(x - 1, y);
-            }
-            break;
-        case 3:
-            // Square piece
-            this->positions[0] = Vector(x, y);
-            this->positions[1] = Vector(x, y + 1);
-            this->positions[2] = Vector(x + 1, y);
-            this->positions[3] = Vector(x + 1, y + 1);
-            break;
-        case 4:
-            // Z piece
-
-            this->positions[0] = Vector(x, y - 1);
-            this->positions[1] = Vector(x + 1, y - 1);
-            this->positions[2] = Vector(x + 1, y);
-            this->positions[3] = Vector(x + 2, y);
-
-            if (rotation == 1)
-            {
-                this->positions[0] = Vector(x + 1, y);
-                this->positions[1] = Vector(x + 1, y + 1);
-                this->positions[2] = Vector(x, y + 1);
-                this->positions[3] = Vector(x, y + 2);
-            }
-            else if (rotation == 2)
-            {
-                this->positions[0] = Vector(x, y + 1);
-                this->positions[1] = Vector(x - 1, y + 1);
-                this->positions[2] = Vector(x - 1, y);
-                this->positions[3] = Vector(x - 2, y);
-            }
-            else if (rotation == 3)
-            {
-                this->positions[0] = Vector(x - 1, y);
-                this->positions[1] = Vector(x - 1, y - 1);
-                this->positions[2] = Vector(x, y - 1);
-                this->positions[3] = Vector(x, y - 2);
-            }
-            break;
-        case 5:
-            // S piece
-
-            this->positions[0] = Vector(x, y + 1);
-            this->positions[1] = Vector(x + 1, y + 1);
-            this->positions[2] = Vector(x + 1, y);
-            this->positions[3] = Vector(x + 2, y);
-
-            if (rotation == 1)
-            {
-                this->positions[0] = Vector(x + 1, y);
-                this->positions[1] = Vector(x + 1, y - 1);
-                this->positions[2] = Vector(x, y - 1);
-                this->positions[3] = Vector(x, y - 2);
-            }
-            else if (rotation == 2)
-            {
-                this->positions[0] = Vector(x, y - 1);
-                this->positions[1] = Vector(x - 1, y - 1);
-                this->positions[2] = Vector(x - 1, y);
-                this->positions[3] = Vector(x - 2, y);
-            }
-            else if (rotation == 3)
-            {
-                this->positions[0] = Vector(x - 1, y);
-                this->positions[1] = Vector(x - 1, y + 1);
-                this->positions[2] = Vector(x, y + 1);
-                this->positions[3] = Vector(x, y + 2);
-            }
-            break;
-        case 6:
-            // T piece
-
-            this->positions[0] = Vector(x, y + 1);
-            this->positions[1] = Vector(x + 1, y + 1);
-            this->positions[2] = Vector(x + 1, y);
-            this->positions[3] = Vector(x + 2, y + 1);
-            if (rotation == 1)
-            {
-                this->positions[0] = Vector(x + 1, y);
-                this->positions[1] = Vector(x + 1, y - 1);
-                this->positions[2] = Vector(x, y - 1);
-                this->positions[3] = Vector(x + 1, y - 2);
-            }
-            else if (rotation == 2)
-            {
-                this->positions[0] = Vector(x, y - 1);
-                this->positions[1] = Vector(x - 1, y - 1);
-                this->positions[2] = Vector(x - 1, y);
-                this->positions[3] = Vector(x - 2, y - 1);
-            }
-            else if (rotation == 3)
-            {
-                this->positions[0] = Vector(x - 1, y);
-                this->positions[1] = Vector(x - 1, y + 1);
-                this->positions[2] = Vector(x, y + 1);
-                this->positions[3] = Vector(x - 1, y + 2);
-            }
-            break;
-        default:
-            break;
-        }
-
-        // Print all the positions of the piece
-        std::cout
-            << "Positions:" << std::endl;
+        // Move the entire piece by x and y
+        // Positive x moves right, negative x moves left
+        // Positive y moves down, negative y moves up
         for (int i = 0; i < 4; i++)
         {
-            std::cout << positions[i].X << " " << positions[i].Y << std::endl;
+            positions[i] = Vector(positions[i].X + x, positions[i].Y + y);
         }
-        Sleep(1000);
     }
 
-    int
-    getBgColor()
+    int GetBgColor()
     {
         switch (type)
         {
@@ -305,18 +113,177 @@ public:
         }
     }
 
-    void move(Vector direction)
-    {
-        // Move the piece in a direction
-        for (int i = 0; i < 4; i++)
-        {
-            positions[i] = positions[i] + direction;
-        }
-    }
-
     // The rotate function is complex and needs to be well executed
-    void rotate()
+    void Rotate(int direction = 1)
     {
+        // Rotate the piece based on the input direction
+        // direction = 1 -> Rotate clockwise
+        // direction = 0 -> Rotate counter-clockwise
+
+        // The rotation point is the second block of the piece
+        Vector rotationPoint = positions[1];
+        rotation = (rotation + direction) % 4;
+
+        // Rotating the piece
+        switch (type)
+        {
+            // Rotate pieces in 90 degrees
+        case 0:
+            // Line piece (Light blue)
+            switch (rotation)
+            {
+            case 0:
+            case 2:
+                positions[0] = rotationPoint + Vector(0, -1);
+                positions[2] = rotationPoint + Vector(0, 1);
+                positions[3] = rotationPoint + Vector(0, 2);
+                break;
+            case 1:
+            case 3:
+                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[2] = rotationPoint + Vector(1, 0);
+                positions[3] = rotationPoint + Vector(2, 0);
+                break;
+            default:
+                break;
+            }
+            break;
+        case 1:
+            // L piece (Orange)
+            switch (rotation)
+            {
+            case 0:
+                // L is upright
+                positions[0] = rotationPoint + Vector(0, -1);
+                positions[2] = rotationPoint + Vector(0, 1);
+                positions[3] = rotationPoint + Vector(1, 1);
+                break;
+            case 1:
+                // L tilted to the right
+                positions[0] = rotationPoint + Vector(1, 0);
+                positions[2] = rotationPoint + Vector(-1, 0);
+                positions[3] = rotationPoint + Vector(-1, 1);
+                break;
+            case 2:
+                // L is upside down
+                positions[0] = rotationPoint + Vector(0, 1);
+                positions[2] = rotationPoint + Vector(0, -1);
+                positions[3] = rotationPoint + Vector(-1, -1);
+                break;
+            case 3:
+                // L tilted to the left
+                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[2] = rotationPoint + Vector(1, 0);
+                positions[3] = rotationPoint + Vector(1, -1);
+                break;
+            default:
+                break;
+            }
+            break;
+        case 2:
+            // J piece (Blue) (Inverted L)
+            switch (rotation)
+            {
+            case 0:
+                // J is upright
+                positions[0] = rotationPoint + Vector(0, -1);
+                positions[2] = rotationPoint + Vector(0, 1);
+                positions[3] = rotationPoint + Vector(-1, 1);
+                break;
+            case 1:
+                // J tilted to the right
+                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[2] = rotationPoint + Vector(-1, 0);
+                positions[3] = rotationPoint + Vector(-1, -1);
+                break;
+            case 2:
+                // J is upside down
+                positions[0] = rotationPoint + Vector(0, 1);
+                positions[2] = rotationPoint + Vector(0, -1);
+                positions[3] = rotationPoint + Vector(1, -1);
+                break;
+            case 3:
+                // J tilted to the left
+                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[2] = rotationPoint + Vector(1, 0);
+                positions[3] = rotationPoint + Vector(1, 1);
+                break;
+            default:
+                break;
+            }
+            break;
+        case 3:
+            // Square piece
+            break;
+        case 4:
+            // Z piece
+            switch (rotation)
+            {
+            case 0:
+            case 2:
+                positions[0] = rotationPoint + Vector(1, -1);
+                positions[2] = rotationPoint + Vector(-1, 1);
+                positions[3] = rotationPoint + Vector(-2, 0);
+                break;
+            case 1:
+            case 3:
+                positions[0] = rotationPoint + Vector(-1, 1);
+                positions[2] = rotationPoint + Vector(1, -1);
+                positions[3] = rotationPoint + Vector(0, -2);
+                break;
+            default:
+                break;
+            }
+            break;
+        case 5:
+            // S piece
+            switch (rotation)
+            {
+            case 0:
+            case 2:
+                positions[0] = rotationPoint + Vector(-1, -1);
+                positions[2] = rotationPoint + Vector(1, 1);
+                positions[3] = rotationPoint + Vector(2, 0);
+                break;
+            case 1:
+            case 3:
+                positions[0] = rotationPoint + Vector(1, 1);
+                positions[2] = rotationPoint + Vector(-1, -1);
+                positions[3] = rotationPoint + Vector(0, -2);
+                break;
+            default:
+                break;
+            }
+            break;
+        case 6:
+            // T piece
+            switch (rotation)
+            {
+            case 0:
+                positions[0] = rotationPoint + Vector(-1, 1);
+                positions[2] = rotationPoint + Vector(1, -1);
+                positions[3] = rotationPoint + Vector(1, -2);
+                break;
+            case 1:
+                positions[0] = rotationPoint + Vector(1, 1);
+                positions[2] = rotationPoint + Vector(-1, -1);
+                positions[3] = rotationPoint + Vector(-2, -1);
+                break;
+            case 2:
+                positions[0] = rotationPoint + Vector(1, -1);
+                positions[2] = rotationPoint + Vector(-1, 1);
+                positions[3] = rotationPoint + Vector(-1, 2);
+                break;
+            case 3:
+                positions[0] = rotationPoint + Vector(-1, -1);
+                positions[2] = rotationPoint + Vector(1, 1);
+                positions[3] = rotationPoint + Vector(2, 1);
+                break;
+            }
+
+        default:
+            break;
+        }
     }
 
 private:
@@ -330,49 +297,49 @@ private:
         case 0:
             // Line piece
             positions[0] = Vector(0, 0);
-            positions[1] = Vector(0, 1);
+            positions[1] = Vector(0, 1); // Rotation point
             positions[2] = Vector(0, 2);
             positions[3] = Vector(0, 3);
             break;
         case 1:
             // L piece
             positions[0] = Vector(0, 0);
-            positions[1] = Vector(0, 1);
+            positions[1] = Vector(0, 1); // Rotation point
             positions[2] = Vector(0, 2);
             positions[3] = Vector(1, 2);
             break;
         case 2:
             // J piece
             positions[0] = Vector(1, 0);
-            positions[1] = Vector(1, 1);
+            positions[1] = Vector(1, 1); // Rotation point
             positions[2] = Vector(1, 2);
             positions[3] = Vector(0, 2);
             break;
         case 3:
             // Square piece
             positions[0] = Vector(0, 0);
-            positions[1] = Vector(0, 1);
+            positions[1] = Vector(0, 1); // Rotation point
             positions[2] = Vector(1, 0);
             positions[3] = Vector(1, 1);
             break;
         case 4:
             // Z piece
             positions[0] = Vector(0, 0);
-            positions[1] = Vector(1, 0);
+            positions[1] = Vector(1, 0); // Rotation point
             positions[2] = Vector(1, 1);
             positions[3] = Vector(2, 1);
             break;
         case 5:
             // S piece
             positions[0] = Vector(0, 1);
-            positions[1] = Vector(1, 1);
+            positions[1] = Vector(1, 1); // Rotation point
             positions[2] = Vector(1, 0);
             positions[3] = Vector(2, 0);
             break;
         case 6:
             // T piece
             positions[0] = Vector(0, 1);
-            positions[1] = Vector(1, 1);
+            positions[1] = Vector(1, 1); // Rotation point
             positions[2] = Vector(1, 0);
             positions[3] = Vector(2, 1);
             break;

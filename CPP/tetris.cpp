@@ -6,6 +6,6 @@
 int main()
 {
     Tetris tetris = Tetris();
-    tetris.run();
+    tetris.Run();
     return 0;
 }
