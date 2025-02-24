@@ -56,8 +56,18 @@ public:
         *this = Piece((rand() % 7) - 1);
     }
 
-    void Draw()
+    void Draw(int e = 0)
     {
+        if (e && isFalling)
+        {
+            // Errase before moving
+            SetConsoleColor(0, 0);
+            for (int i = 0; i < 4; i++)
+            {
+                SetCursorPosition(positions[i].X * 2, positions[i].Y);
+                std::cout << "  ";
+            }
+        }
         // Draw the piece
         SetConsoleColor(GetBgColor(), 0);
         // SetConsoleColor(0, GetBgColor());
@@ -72,6 +82,20 @@ public:
 
     void Move(int x, int y)
     {
+        if (!isFalling)
+        {
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (positions[i].Y > 30)
+            {
+                isFalling = false;
+                return;
+            }
+        }
+
         // Move the entire piece by x and y
         // Positive x moves right, negative x moves left
         // Positive y moves down, negative y moves up
@@ -122,7 +146,15 @@ public:
 
         // The rotation point is the second block of the piece
         Vector rotationPoint = positions[1];
-        rotation = (rotation + direction) % 4;
+        rotation += 1 * direction;
+        if (rotation > 3)
+        {
+            rotation = 0;
+        }
+        else if (rotation < 0)
+        {
+            rotation = 3;
+        }
 
         // Rotating the piece
         switch (type)
@@ -192,7 +224,7 @@ public:
                 break;
             case 1:
                 // J tilted to the right
-                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[0] = rotationPoint + Vector(1, 0);
                 positions[2] = rotationPoint + Vector(-1, 0);
                 positions[3] = rotationPoint + Vector(-1, -1);
                 break;
@@ -213,71 +245,79 @@ public:
             }
             break;
         case 3:
-            // Square piece
+            // Square piece (Yellow)
             break;
         case 4:
-            // Z piece
+            // Z piece (Red)
             switch (rotation)
             {
             case 0:
             case 2:
-                positions[0] = rotationPoint + Vector(1, -1);
-                positions[2] = rotationPoint + Vector(-1, 1);
-                positions[3] = rotationPoint + Vector(-2, 0);
+                // Z is upright
+                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[2] = rotationPoint + Vector(0, 1);
+                positions[3] = rotationPoint + Vector(1, 1);
                 break;
             case 1:
             case 3:
-                positions[0] = rotationPoint + Vector(-1, 1);
-                positions[2] = rotationPoint + Vector(1, -1);
-                positions[3] = rotationPoint + Vector(0, -2);
+                // Z is tilted
+                positions[0] = rotationPoint + Vector(0, -1);
+                positions[2] = rotationPoint + Vector(-1, 0);
+                positions[3] = rotationPoint + Vector(-1, 1);
                 break;
             default:
                 break;
             }
             break;
         case 5:
-            // S piece
+            // S piece (Green)
             switch (rotation)
             {
             case 0:
             case 2:
-                positions[0] = rotationPoint + Vector(-1, -1);
-                positions[2] = rotationPoint + Vector(1, 1);
-                positions[3] = rotationPoint + Vector(2, 0);
+                // S is upright
+                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[2] = rotationPoint + Vector(0, -1);
+                positions[3] = rotationPoint + Vector(1, -1);
                 break;
             case 1:
             case 3:
-                positions[0] = rotationPoint + Vector(1, 1);
-                positions[2] = rotationPoint + Vector(-1, -1);
-                positions[3] = rotationPoint + Vector(0, -2);
+                // S is tilted
+                positions[0] = rotationPoint + Vector(0, -1);
+                positions[2] = rotationPoint + Vector(1, 0);
+                positions[3] = rotationPoint + Vector(1, 1);
                 break;
             default:
                 break;
             }
             break;
         case 6:
-            // T piece
+            // T piece (Purple)
             switch (rotation)
             {
             case 0:
-                positions[0] = rotationPoint + Vector(-1, 1);
-                positions[2] = rotationPoint + Vector(1, -1);
-                positions[3] = rotationPoint + Vector(1, -2);
+                // T is upright
+                positions[0] = rotationPoint + Vector(-1, 0);
+                positions[2] = rotationPoint + Vector(1, 0);
+                positions[3] = rotationPoint + Vector(0, -1);
                 break;
             case 1:
-                positions[0] = rotationPoint + Vector(1, 1);
-                positions[2] = rotationPoint + Vector(-1, -1);
-                positions[3] = rotationPoint + Vector(-2, -1);
+                // T is tilted to the right
+                positions[0] = rotationPoint + Vector(0, -1);
+                positions[2] = rotationPoint + Vector(0, 1);
+                positions[3] = rotationPoint + Vector(1, 0);
                 break;
             case 2:
-                positions[0] = rotationPoint + Vector(1, -1);
-                positions[2] = rotationPoint + Vector(-1, 1);
-                positions[3] = rotationPoint + Vector(-1, 2);
+                // T is upside down
+                positions[0] = rotationPoint + Vector(1, 0);
+                positions[2] = rotationPoint + Vector(-1, 0);
+                positions[3] = rotationPoint + Vector(0, 1);
                 break;
             case 3:
-                positions[0] = rotationPoint + Vector(-1, -1);
-                positions[2] = rotationPoint + Vector(1, 1);
-                positions[3] = rotationPoint + Vector(2, 1);
+                // T is tilted to the left
+                positions[0] = rotationPoint + Vector(0, 1);
+                positions[2] = rotationPoint + Vector(0, -1);
+                positions[3] = rotationPoint + Vector(-1, 0);
                 break;
             }
 

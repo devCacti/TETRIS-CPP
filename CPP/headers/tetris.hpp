@@ -13,7 +13,6 @@
 
 // C and C++ includes
 #include <windows.h>
-#include <malloc.h>
 #include <conio.h>
 
 // Custom includes (headers) (C++ only)
@@ -58,21 +57,89 @@ public:
         std::cout << std::endl;
         TestColors();
 
+        const int delay = 500;
+        int start = GetTickCount();
+
+        FlushConsole();
+
+        char key;
+        while (1)
+        {
+            key = 0;
+
+            if (_kbhit())
+            {
+                key = _getch();
+
+                // Only using WASD keys
+                switch (key)
+                {
+                case 'w':
+                    // Rotate the piece
+                    pieces[0].Rotate();
+                    update();
+                    break;
+                case 'a':
+                    // Move the piece left
+                    pieces[0].Move(-1, 0);
+                    update();
+                    break;
+                case 's':
+                    // Move the piece down
+                    pieces[0].Move(0, 1);
+                    update();
+                    break;
+                case 'd':
+                    // Move the piece right
+                    pieces[0].Move(1, 0);
+                    update();
+                    break;
+                case 'q':
+                    // Quit the game
+                    return;
+
+                    // default:
+                    //     return;
+                }
+            }
+
+            if (GetTickCount() - start >= delay)
+            {
+                start = GetTickCount();
+                pieces[0].Move(0, 1);
+                update();
+            }
+            Sleep(10); // To avoid 100% CPU usage
+        }
+
         int i = 0;
         for (auto &piece : pieces)
         {
+            i++;
+            piece.Move(i * 5, i * 2);
+            piece.rotation = 0;
+            // Show All pieces
             FlushConsole();
             for (int j = 0; j < i; j++)
             {
                 pieces[j].Draw();
             }
-            i++;
-            piece.Move(i * 5, i * 2);
-            Sleep(250);
-            piece.Draw();
+            Sleep(500);
             piece.Rotate();
-            Sleep(250);
-            piece.Draw();
+            // Show All pieces
+            FlushConsole();
+            for (int j = 0; j < i; j++)
+            {
+                pieces[j].Draw();
+            }
+            piece.Rotate();
+            Sleep(500);
+            // Show All pieces
+            FlushConsole();
+            for (int j = 0; j < i; j++)
+            {
+                pieces[j].Draw();
+            }
             Sleep(500);
         }
 
@@ -104,6 +171,8 @@ private:
     void update()
     {
         // Update the game
+        // FlushConsole();
+        pieces[0].Draw(1);
     }
 
     void render()
