@@ -38,6 +38,7 @@ public:
         {
             pieces.push_back(Piece());
             pieces[i].NewPiece();
+            pieces[i].isFalling = true;
         }
 
         srand(time(0));             // Seed the random number generator
@@ -53,19 +54,17 @@ public:
 
     void Run()
     {
-        RenderTetris();
         std::cout << std::endl;
+        RenderTetris();
         TestColors();
-
-        const int delay = 500;
-        int start = GetTickCount();
-
         FlushConsole();
 
         char key;
+        start = GetTickCount();
         while (1)
         {
             key = 0;
+            pieces[0].Draw(1);
 
             if (_kbhit())
             {
@@ -77,22 +76,18 @@ public:
                 case 'w':
                     // Rotate the piece
                     pieces[0].Rotate();
-                    update();
                     break;
                 case 'a':
                     // Move the piece left
                     pieces[0].Move(-1, 0);
-                    update();
                     break;
                 case 's':
                     // Move the piece down
                     pieces[0].Move(0, 1);
-                    update();
                     break;
                 case 'd':
                     // Move the piece right
                     pieces[0].Move(1, 0);
-                    update();
                     break;
                 case 'q':
                     // Quit the game
@@ -102,47 +97,9 @@ public:
                     //     return;
                 }
             }
-
-            if (GetTickCount() - start >= delay)
-            {
-                start = GetTickCount();
-                pieces[0].Move(0, 1);
-                update();
-            }
+            Update();
             Sleep(10); // To avoid 100% CPU usage
         }
-
-        int i = 0;
-        for (auto &piece : pieces)
-        {
-            i++;
-            piece.Move(i * 5, i * 2);
-            piece.rotation = 0;
-            // Show All pieces
-            FlushConsole();
-            for (int j = 0; j < i; j++)
-            {
-                pieces[j].Draw();
-            }
-            Sleep(500);
-            piece.Rotate();
-            // Show All pieces
-            FlushConsole();
-            for (int j = 0; j < i; j++)
-            {
-                pieces[j].Draw();
-            }
-            piece.Rotate();
-            Sleep(500);
-            // Show All pieces
-            FlushConsole();
-            for (int j = 0; j < i; j++)
-            {
-                pieces[j].Draw();
-            }
-            Sleep(500);
-        }
-
         // Read ANY key from the user to close the console
         _getch();
     }
@@ -151,7 +108,7 @@ public:
     {
         std::cout << std::endl
                   << "Testing colors" << std::endl;
-        Sleep(1000);
+        Sleep(250);
         for (int i = 0; i < 16; i++)
         {
             SetConsoleColor(i, i == 0 ? 15 : 0);
@@ -163,21 +120,30 @@ public:
             Sleep(20);
         }
 
-        Sleep(1000);
+        Sleep(250);
         ResetColor();
     }
 
 private:
-    void update()
+    int start = 0;
+    const int delay = 500; // Delay in milliseconds
+
+    void Update()
     {
         // Update the game
         // FlushConsole();
-        pieces[0].Draw(1);
+        if (GetTickCount() - start >= delay)
+        {
+            start = GetTickCount();
+            pieces[0].Move(0, 1);
+        }
+        Render();
     }
 
-    void render()
+    void Render()
     {
         // Render the game, it is a console game so it is printed to the console
+        pieces[0].Draw();
     }
 
     // Render a text saying "Tetris" using blocks (white spaces)
