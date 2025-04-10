@@ -32,6 +32,7 @@ public:
     // Public functions
     Tetris() // Constructor (no arguments)
     {
+        srand(time(0)); // Seed the random number generator
         // Create a new piece
         // Allocate memory for a single piece
         for (int i = 0; i < 7; i++)
@@ -41,7 +42,6 @@ public:
             pieces[i].isFalling = true;
         }
 
-        srand(time(0));             // Seed the random number generator
         std::setlocale(LC_ALL, ""); // Set the locale to UTF-8
     };
 
@@ -55,8 +55,14 @@ public:
     void Run()
     {
         std::cout << std::endl;
+
+        // Render the tetris text
         RenderTetris();
+
+        // Test colors
         TestColors();
+
+        // Clear the console
         FlushConsole();
 
         char key;
@@ -64,9 +70,9 @@ public:
         while (1)
         {
             key = 0;
-            pieces[0].Draw(1);
+            Render(1); // Clean the piece
 
-            if (_kbhit())
+            if (_kbhit()) // Keyboard hit
             {
                 key = _getch();
 
@@ -92,9 +98,6 @@ public:
                 case 'q':
                     // Quit the game
                     return;
-
-                    // default:
-                    //     return;
                 }
             }
             Update();
@@ -136,24 +139,32 @@ private:
         {
             start = GetTickCount();
             pieces[0].Move(0, 1);
+            std::cout << pieces[0].positions[0].Y << std::endl;
         }
         Render();
     }
 
-    void Render()
+    void Render(int type = 0)
     {
         // Render the game, it is a console game so it is printed to the console
-        pieces[0].Draw();
+        if ((pieces[0].isMoving || pieces[0].isFalling) && !type)
+        {
+            pieces[0].Draw();
+        }
+        else if (type)
+        {
+            pieces[0].Draw(1);
+        }
     }
 
     // Render a text saying "Tetris" using blocks (white spaces)
     void RenderTetris()
     {
-        char l1[] = "XXXXX XXXX XXXXX XXXX  XXXXX   XXXXX";
-        char l2[] = "  X   X      X   X   X   X    X";
-        char l3[] = "  X   XXX    X   XXXX    X     XXXX";
-        char l4[] = "  X   X      X   X   X   X         X";
-        char l5[] = "  X   XXXX   X   X   X XXXXX  XXXXX";
+        char l1[] = "XXXXX XXXX XXXXX XXXX  XXXXX  XXXXX";
+        char l2[] = "  X   X      X   X   X   X   X";
+        char l3[] = "  X   XXX    X   XXXX    X    XXXX";
+        char l4[] = "  X   X      X   X   X   X        X";
+        char l5[] = "  X   XXXX   X   X   X XXXXX XXXXX";
 
         char *lines[] = {l1, l2, l3, l4, l5};
 

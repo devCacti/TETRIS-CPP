@@ -5,7 +5,7 @@
 
 int main()
 {
-    Tetris tetris = Tetris();
+    Tetris tetris;
     tetris.Run();
     return 0;
 }
