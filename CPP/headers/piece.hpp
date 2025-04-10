@@ -41,6 +41,14 @@ public:
     bool isFalling;
     bool isMoving;
 
+private:
+    // Private variables
+    int fallSpeed;   // Speed of falling
+    int fieldStartX; // X position of the field
+    int fieldStartY; // Y position of the field
+    int fieldWidth;  // Width of the field
+    int fieldHeight; // Height of the field
+
 public:
     // Public functions
     Piece()
@@ -50,6 +58,9 @@ public:
         isFalling = true;
         isMoving = true;
         rotation = 0;
+
+        // Set the default settings of the game
+        SetDefaultSettings();
     }
 
     // Change the piece to a new random piece
@@ -111,6 +122,14 @@ public:
                 isFalling = false;
                 return;
             }
+        }
+
+        // If the piece is trying to move outside the field (X)
+        if (positions[0].X + x < fieldStartX || positions[0].X + x > fieldStartX + fieldWidth)
+        {
+            SetConsoleColor(1, 5);
+            std::cout << "Disabled 0";
+            return;
         }
 
         // Move the entire piece by x and y
@@ -351,6 +370,10 @@ private:
         isMoving = true;
         rotation = 0;
         this->type = type;
+
+        // Set the default settings of the game
+        SetDefaultSettings();
+
         switch (type)
         {
         case 0:
@@ -405,6 +428,23 @@ private:
         default:
             break;
         }
+
+        // Set the proper place of the pieces, making sure they are in the middle of the field and not at the top left
+        for (int i = 0; i < 4; i++)
+        {
+            positions[i].X += fieldStartX + (fieldWidth / 2);
+            positions[i].Y += fieldStartY;
+        }
+    }
+
+    void SetDefaultSettings()
+    {
+        // Get the settings of the game
+        fieldStartX = 0;
+        fieldStartY = 0;
+        fieldWidth = 10;
+        fieldHeight = 30;
+        fallSpeed = 1;
     }
 };
 
