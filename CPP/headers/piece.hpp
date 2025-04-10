@@ -39,6 +39,7 @@ public:
     int type;
     int rotation; // 0 - 3
     bool isFalling;
+    bool isMoving;
 
 public:
     // Public functions
@@ -47,6 +48,7 @@ public:
         // Constructor (no arguments)
         type = -1;
         isFalling = true;
+        isMoving = true;
         rotation = 0;
     }
 
@@ -67,6 +69,7 @@ public:
                 SetCursorPosition(positions[i].X * 2, positions[i].Y);
                 std::cout << "  ";
             }
+            return;
         }
         // Draw the piece
         SetConsoleColor(GetBgColor(), 0);
@@ -82,15 +85,29 @@ public:
 
     void Move(int x, int y)
     {
-        if (!isFalling)
+        if (!isFalling && y)
         {
+            SetConsoleColor(1, 5);
+            std::cout << "Disabled 3";
+            return;
+        }
+
+        // If it's not allowed to move and the Function is called to move from side to side
+        // Return, as the piece should not move anymore
+        if (!isMoving && x)
+        {
+            SetConsoleColor(1, 5);
+            std::cout << "Disabled 2";
             return;
         }
 
         for (int i = 0; i < 4; i++)
         {
-            if (positions[i].Y > 30)
+            if (positions[i].Y >= 20 && y)
             {
+                SetConsoleColor(1, 5);
+                std::cout << "Disabled 1";
+
                 isFalling = false;
                 return;
             }
@@ -331,6 +348,8 @@ private:
     {
         // Constructor (with arguments)
         isFalling = true;
+        isMoving = true;
+        rotation = 0;
         this->type = type;
         switch (type)
         {
