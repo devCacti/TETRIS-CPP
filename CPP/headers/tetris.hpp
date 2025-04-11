@@ -140,7 +140,7 @@ private:
         {
             start = GetTickCount();
             pieces[0].Move(0, 1);
-            std::cout << pieces[0].positions[0].Y << std::endl;
+            ////std::cout << pieces[0].positions[0].Y << std::endl;
         }
         Render();
     }
