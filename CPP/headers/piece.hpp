@@ -143,8 +143,8 @@ public:
         // Return, as the piece should not move anymore
         if (!isMoving && x)
         {
-            SetConsoleColor(1, 5);
-            std::cout << "Disabled 1";
+            ////SetConsoleColor(1, 5);
+            ////std::cout << "Disabled 1";
             return;
         }
 
@@ -153,15 +153,15 @@ public:
         {
             if (positions[i].X + x < fieldStartX || positions[i].X + x > fieldStartX + fieldWidth && x)
             {
-                SetConsoleColor(1, 5);
-                std::cout << "Disabled 2";
+                ////SetConsoleColor(1, 5);
+                ////std::cout << "Disabled 2";
                 return;
             }
 
             if (positions[i].Y + y < fieldStartY || positions[i].Y + y > fieldStartY + fieldHeight && y)
             {
-                SetConsoleColor(1, 5);
-                std::cout << "Disabled 3";
+                ////SetConsoleColor(1, 5);
+                ////std::cout << "Disabled 3";
                 return;
             }
         }
@@ -176,8 +176,8 @@ public:
         for (int i = 0; i < 4; i++)
         {
             positions[i] = Vector(positions[i].X + x, positions[i].Y + y);
+            Draw(); // For a cleaner update, to avoid leaving trails
         }
-        Draw(); // For a cleaner update, to avoid leaving trails
     }
 
     int GetBgColor()
@@ -403,48 +403,54 @@ public:
         }
 
         // Check if the piece is out of bounds after rotation
-        for (int i = 0; i < 4; i++)
+        // Checks the entire piece twice
+        for (int _ = 0; _ < 2; _++)
         {
-            //? Horizontal Check
-            if (positions[i].X < fieldStartX)
+            for (int i = 0; i < 4; i++)
             {
-                // If it's possible to pull it inside the field, do it
-                for (int j = 0; j < 4; j++)
+                //? Horizontal Check
+                if (positions[i].X < fieldStartX)
                 {
-                    positions[j].X++;
+                    // If it's possible to pull it inside the field, do it
+                    for (int j = 0; j < 4; j++)
+                    {
+                        positions[j].X++;
+                    }
+                    break;
                 }
-                break;
-            }
-            if (positions[i].X > fieldStartX + fieldWidth)
-            {
-                // If it's possible to pull it inside the field, do it
-                for (int j = 0; j < 4; j++)
+                if (positions[i].X > fieldStartX + fieldWidth)
                 {
-                    positions[j].X--;
+                    // If it's possible to pull it inside the field, do it
+                    for (int j = 0; j < 4; j++)
+                    {
+                        positions[j].X--;
+                    }
+                    break;
                 }
-                break;
-            }
 
-            //? Vertical Check
-            if (positions[i].Y < fieldStartY)
-            {
-                // If it's possible to pull it inside the field, do it
-                for (int j = 0; j < 4; j++)
+                //? Vertical Check
+                if (positions[i].Y < fieldStartY)
                 {
-                    positions[j].Y++;
+                    // If it's possible to pull it inside the field, do it
+                    for (int j = 0; j < 4; j++)
+                    {
+                        positions[j].Y++;
+                    }
+                    break;
                 }
-                break;
-            }
-            if (positions[i].Y > fieldStartY + fieldHeight)
-            {
-                // If it's possible to pull it inside the field, do it
-                for (int j = 0; j < 4; j++)
+                if (positions[i].Y > fieldStartY + fieldHeight)
                 {
-                    positions[j].Y--;
+                    // If it's possible to pull it inside the field, do it
+                    for (int j = 0; j < 4; j++)
+                    {
+                        positions[j].Y--;
+                    }
+                    break;
                 }
-                break;
             }
         }
+        // Draw the piece
+        Draw();
     }
 
 private:
