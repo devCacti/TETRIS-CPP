@@ -28,6 +28,8 @@ public:
     // Public variables
     std::vector<Piece> pieces;
 
+    static void Run();
+
 public:
     // Public functions
     Tetris() // Constructor (no arguments)
@@ -39,7 +41,6 @@ public:
         {
             pieces.push_back(Piece());
             pieces[i].NewPiece();
-            pieces[i].isFalling = true;
         }
 
         std::setlocale(LC_ALL, ""); // Set the locale to UTF-8
@@ -52,7 +53,7 @@ public:
         SetConsoleColor(7, 0);
     }
 
-    void Run()
+    void Game()
     {
         std::cout << std::endl;
 
@@ -60,7 +61,7 @@ public:
         RenderTetris();
 
         // Test colors
-        TestColors();
+        //! TestColors();
 
         // Clear the console
         FlushConsole();
@@ -70,7 +71,7 @@ public:
         while (1)
         {
             key = 0;
-            Render(1); // Clean the piece
+            Render(); // Clean the piece
 
             if (_kbhit()) // Keyboard hit
             {
@@ -96,7 +97,7 @@ public:
                     pieces[0].Move(1, 0);
                     break;
                 case 'q':
-                    // Quit the game
+                    // Quit the Run
                     return;
                 }
             }
@@ -147,14 +148,7 @@ private:
     void Render(int type = 0)
     {
         // Render the game, it is a console game so it is printed to the console
-        if ((pieces[0].isMoving || pieces[0].isFalling) && !type)
-        {
-            pieces[0].Draw();
-        }
-        else if (type)
-        {
-            pieces[0].Draw(1);
-        }
+        pieces[0].Draw(0);
     }
 
     // Render a text saying "Tetris" using blocks (white spaces)
@@ -180,7 +174,7 @@ private:
                     // If there is an X print a white space
                     SetConsoleColor(15, 0);
                     cout << " ";
-                    Sleep(10);
+                    Sleep(1);
                 }
                 else
                 {
@@ -202,5 +196,22 @@ private:
         SetConsoleColor(0, 7);
     }
 };
+
+void Tetris::Run()
+{
+    // Code for hiding the cursor
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorInfo;
+
+    GetConsoleCursorInfo(hOut, &cursorInfo);
+    cursorInfo.bVisible = false; // esconder
+    SetConsoleCursorInfo(hOut, &cursorInfo);
+
+    // Create a new Tetris game
+    Tetris tetris;
+
+    // Run the game
+    tetris.Game();
+}
 
 #endif // TETRIS_HPP

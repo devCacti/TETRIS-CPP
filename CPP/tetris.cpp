@@ -5,7 +5,6 @@
 
 int main()
 {
-    Tetris tetris;
-    tetris.Run();
+    Tetris::Run();
     return 0;
 }
